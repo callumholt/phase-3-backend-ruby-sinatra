@@ -76,6 +76,7 @@ GEM
       activerecord (>= 4.1)
       sinatra (>= 1.0)
     sqlite3 (1.6.2-arm64-darwin)
+    sqlite3 (1.6.2-x86_64-darwin)
     thin (1.8.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -87,6 +88,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-19
 
 DEPENDENCIES
   activerecord (~> 6.1)
@@ -106,4 +108,4 @@ DEPENDENCIES
   thin (~> 1.8)
 
 BUNDLED WITH
-   2.3.24
+   2.2.23
