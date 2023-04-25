@@ -3,6 +3,10 @@ require 'rack/cors'
 require 'json'
 require 'bundler/setup'
 require 'sinatra/activerecord'
+require 'yaml'
+require 'psych'
+
+config = Psych.load_file('/Users/callumholt/Development/code/phase_3/phase3_project/phase-3-sinatra-react-project/config/database.yml')
 
 
 
