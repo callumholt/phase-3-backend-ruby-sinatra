@@ -4,6 +4,8 @@ require 'json'
 require 'bundler/setup'
 require 'sinatra/activerecord'
 
+
+
 # deal with CORS Policy
 use Rack::Cors do
   puts "Applying Rack::Cors middleware"
