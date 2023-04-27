@@ -6,9 +6,6 @@ require 'sinatra/activerecord'
 require 'yaml'
 require 'psych'
 
-config = Psych.load_file('/home/ec2-user/phase-3-sinatra-react-project/config/database.yml')
-
-
 
 # deal with CORS Policy
 use Rack::Cors do
