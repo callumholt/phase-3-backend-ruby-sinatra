@@ -7,11 +7,14 @@ default: &default
 development:
   <<: *default
   database: db/development.sqlite3
+  aliases: true
 
 test:
   <<: *default
   database: db/test.sqlite3
+  aliases: true
 
 production:
   <<: *default
   database: db/production.sqlite3
+  aliases: true
