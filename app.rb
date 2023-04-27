@@ -6,7 +6,7 @@ require 'sinatra/activerecord'
 require 'yaml'
 require 'psych'
 
-config = Psych.load_file('/Users/callumholt/Development/code/phase_3/phase3_project/phase-3-sinatra-react-project/config/database.yml')
+config = Psych.load_file('/home/ec2-user/phase-3-sinatra-react-project/config/database.yml')
 
 
 
