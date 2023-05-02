@@ -6,13 +6,20 @@ require 'sinatra/activerecord'
 require 'yaml'
 require 'psych'
 
+before do
+    puts "Request method: #{request.request_method}"
+    puts "Request headers: #{request.env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}"
+    headers 'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
+            'Access-Control-Allow-Headers' => 'Content-Type'
+  end
 
 # deal with CORS Policy
 use Rack::Cors do
   puts "Applying Rack::Cors middleware"
   allow do
     origins '*' # Add any other allowed origins here
-    resource '*', headers: :any, methods: [:get, :post, :options],
+    resource '*', headers: [:any, :update], methods: [:get, :post, :options, :update],
       expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
       max_age: 0
   end
@@ -24,15 +31,26 @@ set :database, { adapter: 'sqlite3', database: 'db.sqlite3' }
 class Todo < ActiveRecord::Base
 end
 
-before do
-    puts "in before headers"
+# before do
+#     puts "in before headers"
 
-  headers 'Access-Control-Allow-Origin' => '*',
-          'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST']
-end
+#   headers 'Access-Control-Allow-Origin' => '*',
+#           'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST', 'PUT']
+# end
+
+# before do
+#     headers 'Access-Control-Allow-Origin' => '*',
+#             'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
+#             'Access-Control-Allow-Headers' => 'Content-Type'
+#   end
+  
+
+  
+
+# 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 options "*" do
-  response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+  response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS,UPDATE"
 
   # Needed for CORS
   response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
@@ -41,7 +59,6 @@ end
 
 post '/todo' do
     begin
-    
     
     puts "Received TODO request to /todo"
     puts "Params: #{params.inspect}"
@@ -116,6 +133,9 @@ put '/todos/:id' do
     rescue ActiveRecord::RecordNotFound
       halt 404, "Todo not found with id #{id}"
     end
+    content_type :json
+  { message: "Todo updated successfully" }.to_json
+
   end
   
   delete '/todos/:id' do
