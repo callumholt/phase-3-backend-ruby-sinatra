@@ -111,7 +111,7 @@ post '/todo' do
 
 end
 
-get '/todos/:user' do
+get '/todo/:user' do
     user = params[:user]
     todos = Todo.select(:id, :todo, :category).where(user: user)
     todos.to_json
@@ -146,7 +146,7 @@ put '/todo/:id' do
 
   end
   
-delete '/todos/:id' do
+delete '/todo/:id' do
     begin
       id = params[:id]
       todo = Todo.find(id)
