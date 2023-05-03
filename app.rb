@@ -123,7 +123,7 @@ put '/todos/:id' do
     begin
       id = params[:id]
       puts "Received PUT request to /todos/#{id}"
-      puts "with params: #{:todo, :category, :id}"
+      puts "with params: todo=#{params[:todo]}, category=#{params[:category]}, user=#{params[:user]}"
 
       todo = Todo.find(id)
   
