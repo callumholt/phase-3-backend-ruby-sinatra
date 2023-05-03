@@ -121,11 +121,19 @@ get '/todos/:user' do
 
 put '/todos/:id' do
     begin
+
+
       id = params[:id]
+      puts "Received PUT request to /todos/#{id}"
+
+
+
       todo = Todo.find(id)
   
       if todo.update(todo: params[:todo], category: params[:category], user: params[:user])
         todo.to_json
+        puts "Updated todo: #{todo.to_json}"
+
       else
         halt 400, todo.errors.full_messages.join(', ')
       end
@@ -138,7 +146,7 @@ put '/todos/:id' do
 
   end
   
-  delete '/todos/:id' do
+delete '/todos/:id' do
     begin
       id = params[:id]
       todo = Todo.find(id)
