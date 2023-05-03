@@ -119,16 +119,18 @@ get '/todos/:user' do
 
 # LINE BREAK #
 
-put '/todos/:id' do
+put '/todo/:id' do
     begin
     id = params[:id]
     request.body.rewind
     params = JSON.parse(request.body.read)
-      puts "Received PUT Request to /todos/#{id}", "with params: todo=#{params[:todo]}, category=#{params[:category]}, user=#{params[:user]}"
+    puts "Received PUT Request to /todos/#{id}\nwith params: params=#{params}"
+    puts "Params -->> params=#{params}, todo=#{params["todo"]}"
+
 
       todo = Todo.find(id)
   
-      if todo.update(todo: params[:todo], category: params[:category], user: params[:user])
+      if todo.update(todo: params["todo"], category: params["category"], user: params["user"])
         todo.to_json
         puts "Updated todo: #{todo.to_json}"
 
