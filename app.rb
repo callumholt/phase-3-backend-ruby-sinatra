@@ -121,10 +121,9 @@ get '/todos/:user' do
 
 put '/todos/:id' do
     begin
-        request.body.rewind
-        params = JSON.parse(request.body.read)
-
-      id = params[:id]
+    id = params[:id]
+    request.body.rewind
+    params = JSON.parse(request.body.read)
       puts "Received PUT Request to /todos/#{id}", "with params: todo=#{params[:todo]}, category=#{params[:category]}, user=#{params[:user]}"
 
       todo = Todo.find(id)
