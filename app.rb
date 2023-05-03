@@ -9,7 +9,7 @@ require 'psych'
 before do
     puts "Request method: #{request.request_method}"
     puts "Request headers: #{request.env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}"
-    headers 'Access-Control-Allow-Origin' => '*',
+    headers 'Access-Control-Allow-Origin' => 'http://localhost:3001/',
             'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
             'Access-Control-Allow-Headers' => 'Content-Type'
   end
