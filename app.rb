@@ -19,7 +19,7 @@ use Rack::Cors do
   puts "Applying Rack::Cors middleware"
   allow do
     origins '*' # Add any other allowed origins here
-    resource '*', headers: [:any, :update], methods: [:get, :post, :options, :update],
+    resource '*', headers: [:any, :update], methods: [:get, :post, :options, :put, :delete],
       expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
       max_age: 0
   end
