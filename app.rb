@@ -9,7 +9,7 @@ require 'psych'
 before do
     puts "Request method: #{request.request_method}"
     puts "Request headers: #{request.env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}"
-    headers 'Access-Control-Allow-Origin' => 'http://localhost:3001/',
+    headers 'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
             'Access-Control-Allow-Headers' => 'Content-Type'
   end
@@ -18,7 +18,7 @@ before do
 use Rack::Cors do
   puts "Applying Rack::Cors middleware"
   allow do
-    origins 'http://localhost:3001/' # Add any other allowed origins here
+    origins '*' # Add any other allowed origins here
     resource '*', headers: [:any, :update], methods: [:get, :post, :options, :update],
       expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
       max_age: 0
