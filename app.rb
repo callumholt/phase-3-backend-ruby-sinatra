@@ -7,15 +7,12 @@ require 'yaml'
 require 'psych'
 
 before do
-    puts "Request method: #{request.request_method}"
-    puts "Request headers: #{request.env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}"
     headers 'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
             'Access-Control-Allow-Headers' => 'Content-Type'
   end
 
 use Rack::Cors do
-  puts "Applying Rack::Cors middleware"
   allow do
     origins '*' 
     resource '*', headers: [:any, :update], methods: [:get, :post, :options, :put, :delete],
@@ -23,7 +20,6 @@ use Rack::Cors do
       max_age: 0
   end
 end
-
 
 set :database, { adapter: 'sqlite3', database: 'db.sqlite3' }
 
@@ -41,12 +37,7 @@ end
 post '/todo' do
     begin
     
-    puts "Received TODO request to /todo"
-    puts "Params: #{params.inspect}"
     json_request_body = request.body.read
-    puts "this is the json request body: #{json_request_body}"
-
-
     content_type :json
   
     unless ActiveRecord::Base.connection.table_exists?(:todos)
@@ -58,16 +49,12 @@ post '/todo' do
       end
     end
 
-    puts "this is stillll the json request body: #{json_request_body}"
-
     request_body = JSON.parse(json_request_body)
-    puts "this is the request_body: #{request_body}"
     todo_value = request_body["todo"]
     category_value = request_body["category"]
     user_value = request_body["user"]  
 
     New_todo = Todo.create(todo: todo_value, category: category_value, user: user_value)
-    puts = "this is the todo: #{New_todo}"
     if New_todo.valid?
         New_todo.to_json
     else
@@ -75,7 +62,6 @@ post '/todo' do
     end
 
     rescue JSON::ParserError => e
-    puts "JSON parse error: #{e.message}"
     halt 400, "Invalid JSON data: #{e.message}"
     end
 
@@ -93,10 +79,6 @@ put '/todo/:id' do
     id = params[:id]
     request.body.rewind
     params = JSON.parse(request.body.read)
-    puts "Received PUT Request to /todos/#{id}\nwith params: params=#{params}"
-    puts "Params -->> params=#{params}, todo=#{params["todo"]}"
-
-
       todo = Todo.find(id)
   
       if todo.update(todo: params["todo"], category: params["category"], user: params["user"])

@@ -42,7 +42,6 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
 
-# Rack::Test::Methods needs this to run our controller
 def app
   Rack::Builder.parse_file('config.ru').first
 end
