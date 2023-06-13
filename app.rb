@@ -14,11 +14,10 @@ before do
             'Access-Control-Allow-Headers' => 'Content-Type'
   end
 
-# deal with CORS Policy
 use Rack::Cors do
   puts "Applying Rack::Cors middleware"
   allow do
-    origins '*' # Add any other allowed origins here
+    origins '*' 
     resource '*', headers: [:any, :update], methods: [:get, :post, :options, :put, :delete],
       expose: ['access-token', 'expiry', 'token-type', 'uid', 'client'],
       max_age: 0
@@ -31,28 +30,10 @@ set :database, { adapter: 'sqlite3', database: 'db.sqlite3' }
 class Todo < ActiveRecord::Base
 end
 
-# before do
-#     puts "in before headers"
-
-#   headers 'Access-Control-Allow-Origin' => '*',
-#           'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST', 'PUT']
-# end
-
-# before do
-#     headers 'Access-Control-Allow-Origin' => '*',
-#             'Access-Control-Allow-Methods' => 'OPTIONS, GET, POST, PUT',
-#             'Access-Control-Allow-Headers' => 'Content-Type'
-#   end
-  
-
-  
-
-# 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 options "*" do
   response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS,UPDATE"
 
-  # Needed for CORS
   response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
   halt HTTP_STATUS_OK
 end
@@ -62,14 +43,12 @@ post '/todo' do
     
     puts "Received TODO request to /todo"
     puts "Params: #{params.inspect}"
-    # puts "Received request with body: #{request.body.read}"
     json_request_body = request.body.read
     puts "this is the json request body: #{json_request_body}"
 
 
     content_type :json
   
-    # Check if the users table exists, and create it if it doesn't exist
     unless ActiveRecord::Base.connection.table_exists?(:todos)
       ActiveRecord::Base.connection.create_table :todos, id: false do |t|
         t.primary_key :id
@@ -78,24 +57,15 @@ post '/todo' do
         t.string :user
       end
     end
-    
-    
-    # Parse the request body to JSON
-    # my_hash = JSON.parse('{"hello": "goodbye"}')
 
     puts "this is stillll the json request body: #{json_request_body}"
-    # request_body = JSON.parse(json_request_body)
 
     request_body = JSON.parse(json_request_body)
     puts "this is the request_body: #{request_body}"
     todo_value = request_body["todo"]
     category_value = request_body["category"]
-    user_value = request_body["user"]
+    user_value = request_body["user"]  
 
-    # puts "this is what will be added to db:  + #{todo} + #{category} + #{user}"
-  
-
-    # Create a new todo
     New_todo = Todo.create(todo: todo_value, category: category_value, user: user_value)
     puts = "this is the todo: #{New_todo}"
     if New_todo.valid?
@@ -117,7 +87,6 @@ get '/todo/:user' do
     todos.to_json
   end
 
-# LINE BREAK #
 
 put '/todo/:id' do
     begin
